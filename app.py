@@ -5,6 +5,8 @@ import datetime
 import os
 import tempfile
 from moviepy.editor import ImageSequenceClip
+import logging
+logging.basicConfig(level=logging.DEBUG)  # At top of function
 
 app = Flask(__name__)
 
@@ -41,7 +43,7 @@ def generate():
         expires_bbox = [w // 2 - 200, h - 205, w // 2 + 200, h - 150]
         bar_bbox = [0, h - 260, w, h - 205]  # 3-way bar area (blinks by hiding/showing original)
 
-        for i in range(60):
+        for i in range(20):
             frame = img.copy()
             draw = ImageDraw.Draw(frame)
 
@@ -93,7 +95,8 @@ def generate():
 
         # Write video with verbose logging
         clip = ImageSequenceClip(frames, fps=1)
-        clip.write_videofile(out_path, codec="libx264", audio=False, verbose=True, logger='bar')
+        clip.write_videofile(out_path, codec="mpeg4", audio=False, verbose=True, logger='bar')
+        logging.debug(f"Video written to {out_path}, size: {os.path.getsize(out_path)} bytes")
 
         # Send file and clean up
         #response = send_file(out_path, mimetype="video/mp4")
@@ -109,6 +112,7 @@ def generate():
 
     except Exception as e:
         return f"Error generating video: {str(e)}", 500
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
