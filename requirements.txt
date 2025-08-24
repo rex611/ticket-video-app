@@ -3,5 +3,5 @@ pillow
 opencv-python-headless
 gunicorn
 moviepy
-numpy
+numpy==2.2.6
 imageio-ffmpeg
