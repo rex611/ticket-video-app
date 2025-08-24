@@ -2,6 +2,6 @@ flask
 pillow
 opencv-python-headless
 gunicorn
-moviepy
+moviepy==1.0.3
 numpy==2.2.6
 imageio-ffmpeg

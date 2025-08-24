@@ -4,6 +4,8 @@ import numpy as np
 import datetime
 import os
 import tempfile
+import moviepy
+print(f"MoviePy version: {moviepy.__version__}")
 from moviepy.editor import ImageSequenceClip
 import logging
 
