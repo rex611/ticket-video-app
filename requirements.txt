@@ -3,4 +3,4 @@ pillow
 opencv-python-headless
 gunicorn
 moviepy
-PIL
+numpy
