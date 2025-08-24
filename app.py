@@ -47,7 +47,7 @@ def generate():
         expires_bbox = [w // 2 - 200, h - 205, w // 2 + 200, h - 150]
         bar_bbox = [0, h - 260, w, h - 205]
 
-        for i in range(60):
+        for i in range(25):
             frame = img.copy()
             draw = ImageDraw.Draw(frame)
 
