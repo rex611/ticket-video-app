@@ -53,7 +53,7 @@ def generate():
 
             draw.rectangle(timestamp_bbox, fill="white")
             current_time = base_time + datetime.timedelta(seconds=i)
-            timestamp_text = current_time.strftime("%I:%M:%S %p\n%A, %B %d, %Y")
+            timestamp_text = current_time.strftime("%I:%M:%S %p\n%A, %b %d, %Y")
             timestamp_lines = timestamp_text.split('\n')
             y_offset = timestamp_pos[1]
             for idx, line in enumerate(timestamp_lines):
@@ -70,7 +70,7 @@ def generate():
             remaining_seconds = 3600 - i
             minutes, seconds = divmod(remaining_seconds, 60)
             hours, minutes = divmod(minutes, 60)
-            expires_text = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+            expires_text = f"Expires in 00:{hours:02d}:{minutes:02d}:{seconds:02d}"
             expires_lines = expires_text.split('\n')
             y_offset = expires_pos[1]
             for idx, line in enumerate(expires_lines):
@@ -93,7 +93,7 @@ def generate():
 
         logging.debug(f"Starting video write to {out_path}")
         clip = ImageSequenceClip(frames, fps=1)
-        clip.write_videofile(out_path, codec="libx264", audio=False, verbose=True, logger='bar')
+        clip.write_videofile(out_path, codec="mpeg4", audio=False, verbose=True, logger='bar')
         logging.debug(f"Video written, size: {os.path.getsize(out_path)} bytes")
 
         response = send_file(out_path, mimetype="video/mp4", as_attachment=True, download_name="ticket_video.mp4")
