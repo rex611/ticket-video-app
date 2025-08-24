@@ -38,17 +38,17 @@ def generate():
         base_time = datetime.datetime.now(nj_tz)
 
         try:
-            font = ImageFont.truetype("Roboto-SemiBold.ttf", 33.5)
+            font = ImageFont.truetype("Roboto-SemiBold.ttf", 60)
             logging.debug("Font loaded successfully")
         except IOError as e:
-            font = ImageFont.load_default().font_variant(size=33.5)
+            font = ImageFont.load_default().font_variant(size=60)
             logging.debug(f"Font load failed, using default: {e}")
 
-        timestamp_pos = (w // 2 - 200, h - 350)
-        timestamp_bbox = [w // 2 - 250, h - 400, w // 2 + 250, h - 260]
-        expires_pos = (w // 2 - 150, h - 200)
-        expires_bbox = [w // 2 - 200, h - 205, w // 2 + 200, h - 150]
-        bar_bbox = [0, h - 260, w, h - 205]
+        timestamp_pos = (w // 2 - 200, h - 700)
+        timestamp_bbox = [w // 2 - 250, h - 700, w // 2 + 250, h - 500]
+        expires_pos = (w // 2 - 150, h - 490)
+        expires_bbox = [w // 2 - 200, h - 400, w // 2 + 200, h - 300]
+        bar_bbox = [0, h - 500, w, h - 400]
 
         for i in range(25):
             frame = img.copy()
