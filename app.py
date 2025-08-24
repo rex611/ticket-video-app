@@ -59,12 +59,16 @@ def generate():
                     draw.text((x, y_offset), line, fill="black", font=font)
                 else:
                     # Add extra spacing for the second line (date)
-                    extra_spacing = 6  # Adjust this value to move the lower line down (e.g., 20px)
+                    extra_spacing = 6  # Adjust this value to move the lower line down
                     draw.text((x, y_offset + (idx * (bbox[3] - bbox[1])) + extra_spacing), line, fill="black", font=font)
 
-            # Erase and update expires (fixed for now)
+            # Erase and update expires (countdown from 1 hour)
             draw.rectangle(expires_bbox, fill="white")
-            expires_text = "Expires in 00:00:59"
+            # Calculate remaining time: start at 3600 seconds (1 hour), decrement by i
+            remaining_seconds = 3600 - i
+            minutes, seconds = divmod(remaining_seconds, 60)
+            hours, minutes = divmod(minutes, 60)
+            expires_text = f"Expires in 00:{hours:02d}:{minutes:02d}:{seconds:02d}"
             expires_lines = expires_text.split('\n')
             y_offset = expires_pos[1]
             for idx, line in enumerate(expires_lines):
