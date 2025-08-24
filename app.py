@@ -8,6 +8,7 @@ import moviepy
 print(f"MoviePy version: {moviepy.__version__}")
 from moviepy.editor import ImageSequenceClip
 import logging
+import pytz
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -32,7 +33,9 @@ def generate():
         
         w, h = img.size
         frames = []
-        base_time = datetime.datetime.now()
+        # Use NJ timezone (America/New_York)
+        nj_tz = pytz.timezone('America/New_York')
+        base_time = datetime.datetime.now(nj_tz)
 
         try:
             font = ImageFont.truetype("Roboto-SemiBold.ttf", 33.5)
