@@ -96,7 +96,8 @@ def generate():
         clip.write_videofile(out_path, codec="libx264", audio=False, verbose=True, logger='bar')
 
         # Send file and clean up
-        response = send_file(out_path, mimetype="video/mp4")
+        #response = send_file(out_path, mimetype="video/mp4")
+        response = send_file(out_path, mimetype="video/mp4", as_attachment=True, download_name="ticket_video.mp4")
         @response.call_on_close
         def cleanup():
             try:
