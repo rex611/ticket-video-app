@@ -45,9 +45,9 @@ def generate():
             logging.debug(f"Font load failed, using default: {e}")
 
         timestamp_pos = (w // 2 - 200, h - 600)
-        timestamp_bbox = [0, h - 600, w, h - 450]
+        timestamp_bbox = [0, h - 650, w, h - 450]
         expires_pos = (w // 2 - 150, h - 360)
-        expires_bbox = [0, h - 380, w, h - 360]
+        expires_bbox = [0, h - 350, w, h - 250]
         bar_bbox = [0, h - 440, w, h - 355]
 
         for i in range(25):
