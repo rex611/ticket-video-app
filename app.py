@@ -49,11 +49,26 @@ def generate():
         expires_pos = (w // 2 - 150, h - 360)
         expires_bbox = [0, h - 350, w, h - 250]
         bar_bbox = [0, h - 440, w, h - 355]
+        # Approximate area for the big "1" (adjust based on your screenshot)
+        number_bbox = [w // 2 - 100, h - 1750, w // 2 + 100, h - 1525]  # Example; refine with measurement
+
+        # Create a "2" image with matching size and font
+        number_font = ImageFont.truetype("Roboto-ExtraBold.ttf", 240)  # Match the "1" size
+        number_text = "2"
+        number_img = Image.new("RGBA", (number_bbox[2] - number_bbox[0], number_bbox[3] - number_bbox[1]), (0, 0, 0, 0))
+        number_draw = ImageDraw.Draw(number_img)
+        bbox = number_draw.textbbox((0, 0), number_text, font=number_font)
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]
+        x = (number_img.width - text_width) // 2
+        y = (number_img.height - text_height) // 2 - 60  # Move up by 30 pixels; adjust as needed
+        number_draw.text((x, y), number_text, fill=(0, 0, 0, 255), font=number_font)
 
         for i in range(25):
             frame = img.copy()
             draw = ImageDraw.Draw(frame)
 
+            # Draw timestamp rectangle (white box)
             draw.rectangle(timestamp_bbox, fill="white")
             current_time = base_time + datetime.timedelta(seconds=i)
             timestamp_text = current_time.strftime("%I:%M:%S %p\n%A, %b %d, %Y")
@@ -69,6 +84,7 @@ def generate():
                     extra_spacing = 6
                     draw.text((x, y_offset + (idx * (bbox[3] - bbox[1])) + extra_spacing), line, fill="black", font=font)
 
+            # Draw expires rectangle (white box)
             draw.rectangle(expires_bbox, fill="white")
             remaining_seconds = 3600 - i
             minutes, seconds = divmod(remaining_seconds, 60)
@@ -85,6 +101,20 @@ def generate():
                 else:
                     extra_spacing = 20
                     draw.text((x, y_offset + (idx * (bbox[3] - bbox[1])) + extra_spacing), line, fill="black", font=font)
+
+            # Replace "1" with "2" using a copied gradient patch
+            number_width = number_bbox[2] - number_bbox[0]
+            number_height = number_bbox[3] - number_bbox[1]
+            # Copy a nearby gradient patch (e.g., to the left of "1")
+            patch_x = number_bbox[0] - number_width
+            if patch_x < 0:
+                patch_x = number_bbox[0] + number_width  # Use right side if left is out of bounds
+            patch = img.crop((patch_x, number_bbox[1], patch_x + number_width, number_bbox[3]))
+            frame.paste(patch, number_bbox)  # Cover the "1" with the patch
+            # Overlay the "2"
+            if number_img.mode != "RGBA":
+                number_img = number_img.convert("RGBA")
+            frame.paste(number_img, number_bbox, number_img)  # Use alpha channel for transparency
 
             if i % 2 != 0:
                 draw.rectangle(bar_bbox, fill="white")
