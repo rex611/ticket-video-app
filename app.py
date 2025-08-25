@@ -44,11 +44,11 @@ def generate():
             font = ImageFont.load_default().font_variant(size=60)
             logging.debug(f"Font load failed, using default: {e}")
 
-        timestamp_pos = (w // 2 - 200, h - 700)
-        timestamp_bbox = [w // 2 - 250, h - 700, w // 2 + 250, h - 500]
-        expires_pos = (w // 2 - 150, h - 490)
-        expires_bbox = [w // 2 - 200, h - 400, w // 2 + 200, h - 300]
-        bar_bbox = [0, h - 500, w, h - 400]
+        timestamp_pos = (w // 2 - 200, h - 550)
+        timestamp_bbox = [w // 2, h - 550, w // 2, h - 450]
+        expires_pos = (w // 2 - 150, h - 360)
+        expires_bbox = [w // 2, h - 380, w // 2, h - 360]
+        bar_bbox = [0, h - 450, w, h - 380]
 
         for i in range(25):
             frame = img.copy()
