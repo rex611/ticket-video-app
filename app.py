@@ -64,6 +64,21 @@ def generate():
         y = (number_img.height - text_height) // 2 - 60  # Move up by 30 pixels; adjust as needed
         number_draw.text((x, y), number_text, fill=(0, 0, 0, 255), font=number_font)
 
+        # Load reference image with red "INTERSTATE" and prepare for pasting
+        reference_path = os.path.join(os.path.dirname(__file__), "screenshot.jpeg")
+        if os.path.exists(reference_path):
+            reference_img = Image.open(reference_path).convert("RGBA")
+            logging.debug(f"Reference image loaded, size: {reference_img.size}")
+            # Define the exact coordinates of "INTERSTATE" in the reference image (adjust based on your screenshot)
+            interstate_x1, interstate_y1 = 0, 1950  # Example coordinates; replace with actual values
+            interstate_x2, interstate_y2 = w, 1800  # Example coordinates; replace with actual values
+            interstate_crop = reference_img.crop((interstate_x1, interstate_y1, interstate_x2, interstate_y2))
+            interstate_width = interstate_x2 - interstate_x1
+            interstate_height = interstate_y2 - interstate_y1
+        else:
+            logging.error("Reference image interstate_reference.png not found")
+            return "Reference image not found", 500
+
         for i in range(25):
             frame = img.copy()
             draw = ImageDraw.Draw(frame)
@@ -105,16 +120,17 @@ def generate():
             # Replace "1" with "2" using a copied gradient patch
             number_width = number_bbox[2] - number_bbox[0]
             number_height = number_bbox[3] - number_bbox[1]
-            # Copy a nearby gradient patch (e.g., to the left of "1")
             patch_x = number_bbox[0] - number_width
             if patch_x < 0:
-                patch_x = number_bbox[0] + number_width  # Use right side if left is out of bounds
+                patch_x = number_bbox[0] + number_width
             patch = img.crop((patch_x, number_bbox[1], patch_x + number_width, number_bbox[3]))
-            frame.paste(patch, number_bbox)  # Cover the "1" with the patch
-            # Overlay the "2"
+            frame.paste(patch, number_bbox)
             if number_img.mode != "RGBA":
                 number_img = number_img.convert("RGBA")
-            frame.paste(number_img, number_bbox, number_img)  # Use alpha channel for transparency
+            frame.paste(number_img, number_bbox, number_img)
+
+            # Paste red "INTERSTATE" at the same absolute coordinates
+            frame.paste(interstate_crop, (interstate_x1, interstate_y1), interstate_crop)
 
             if i % 2 != 0:
                 draw.rectangle(bar_bbox, fill="white")
