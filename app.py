@@ -65,13 +65,13 @@ def generate():
         number_draw.text((x, y), number_text, fill=(0, 0, 0, 255), font=number_font)
 
         # Load reference image with red "INTERSTATE" and prepare for pasting
-        reference_path = os.path.join(os.path.dirname(__file__), "screenshot.jpeg")
+        reference_path = os.path.join(os.path.dirname(__file__), "interstate.png")
         if os.path.exists(reference_path):
             reference_img = Image.open(reference_path).convert("RGBA")
             logging.debug(f"Reference image loaded, size: {reference_img.size}")
             # Define the exact coordinates of "INTERSTATE" in the reference image (adjust based on your screenshot)
-            interstate_x1, interstate_y1 = 0, 1950  # Example coordinates; replace with actual values
-            interstate_x2, interstate_y2 = w, 1800  # Example coordinates; replace with actual values
+            interstate_x1, interstate_y1 = 0, h-1950  # Example coordinates; replace with actual values
+            interstate_x2, interstate_y2 = w, h-1780  # Example coordinates; replace with actual values
             interstate_crop = reference_img.crop((interstate_x1, interstate_y1, interstate_x2, interstate_y2))
             interstate_width = interstate_x2 - interstate_x1
             interstate_height = interstate_y2 - interstate_y1
@@ -79,7 +79,7 @@ def generate():
             logging.error("Reference image interstate_reference.png not found")
             return "Reference image not found", 500
 
-        for i in range(25):
+        for i in range(40):
             frame = img.copy()
             draw = ImageDraw.Draw(frame)
 
