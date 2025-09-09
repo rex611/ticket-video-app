@@ -79,7 +79,7 @@ def generate():
             logging.error("Reference image interstate_reference.png not found")
             return "Reference image not found", 500
 
-        for i in range(25):
+        for i in range(23):
             frame = img.copy()
             draw = ImageDraw.Draw(frame)
 
